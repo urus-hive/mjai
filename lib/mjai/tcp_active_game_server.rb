@@ -5,28 +5,28 @@ require "mjai/file_converter"
 
 
 module Mjai
-    
+
     class TCPActiveGameServer < TCPGameServer
-        
+
         Statistics = Struct.new(:num_games, :total_rank, :total_score, :ranks)
-        
+
         def initialize(params)
           super
           @name_to_stat = {}
         end
-        
+
         def num_tcp_players
           return 4
         end
-        
+
         def play_game(players)
-          
+
           if self.params[:log_dir]
             mjson_path = "%s/%s.mjson" % [self.params[:log_dir], Time.now.strftime("%Y-%m-%d-%H%M%S")]
           else
             mjson_path = nil
           end
-          
+
           game = nil
           success = false
           maybe_open(mjson_path, "w") do |mjson_out|
@@ -43,11 +43,11 @@ module Mjai
             success = game.play()
           end
 
-          FileConverter.new().convert(mjson_path, "#{mjson_path}.html") if mjson_path
+          FileConverter.new().convert(mjson_path, "#{mjson_path}.html") if mjson_path && self.params[:num_games] != 1.0/0.0
           return [game, success]
-          
+
         end
-        
+
         def on_game_succeed(game)
           puts("game %d: %s" % [
               self.num_finished_games,
@@ -81,11 +81,11 @@ module Mjai
             ])
           end
         end
-        
+
         def on_game_fail(game)
           puts("game %d: Ended with error" % self.num_finished_games)
         end
-        
+
         def maybe_open(path, mode, &block)
           if path
             open(path, mode, &block)
@@ -93,7 +93,7 @@ module Mjai
             yield(nil)
           end
         end
-        
+
     end
-    
+
 end
