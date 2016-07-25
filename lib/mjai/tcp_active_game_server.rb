@@ -43,7 +43,7 @@ module Mjai
             success = game.play()
           end
 
-          FileConverter.new().convert(mjson_path, "#{mjson_path}.html") if mjson_path && self.params[:num_games] != 1.0/0.0
+          # FileConverter.new().convert(mjson_path, "#{mjson_path}.html") if mjson_path && self.params[:num_games] != 1.0/0.0
           return [game, success]
 
         end

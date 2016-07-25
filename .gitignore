@@ -6,3 +6,6 @@ resource
 Gemfile.lock
 *.gem
 nohup.out
+
+ais
+
